@@ -1,0 +1,8 @@
+div #quiz {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+#containerRemove {
+    flex-direction: column;
+}
