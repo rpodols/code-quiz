@@ -20,6 +20,9 @@ form {
     display: flex;
     justify-content: center;
 }
+ul {
+    list-style: none;
+}
 #format {
     display: flex;
     justify-content: space-between;
@@ -61,8 +64,28 @@ form {
     display: flex;
     justify-content: center;
 }
-/* #containerRemove {
+#scoresHigh {
     display: flex;
     flex-direction: column;
     align-items: center;
-} */
+}
+#score-menu-button {
+    padding: 1%;
+    margin: 1%;
+    align-self: center;
+}
+#score-title-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#endGame {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+#scoreReset,
+#mainMenuButton {
+    padding: 1%;
+    margin: 1%;
+}

@@ -1,32 +1,3 @@
-// as a user, i want a timed quiz to challenge my coding knowledge
-
-// as a user, i'm going to be asked 5 questions
-    // each question will have four choices
-    // each question will have one correct answer
-    // i will only see one question at a time
-    // when i answer a question right, and the next question displays, 'correct!' will display at the bottom of the page
-    // when i answer a question wrong, and the next question displays, 'Wrong!' will display at the bottom of the page
-
-// as a user, when i'm done answering questions or the timer is up
-    // the timer will stop
-    // i will be presented with my score, my score is the remaining number of seconds on the clock
-    // i will be presented with the previous high score
-    // i will be able to delete the previous high score
-
-// as a user, i will be timed
-    // as a user, whenever i start a new game, the timer will start at 70 seconds
-    // as a user, i see the timer subtracts 10 seconds when i get a question wrong
-    // as a user, when i click 'return to menu' at the end of the game, the timer is no longer present on the screen
-
-
-    //when i hit the main menu button, it deletes the div/area that is holding the timer that appears and then shows you your score
-    //it also sets the value of the timer back to 70 and indexes back to 0
-
-// find a way to store multiple high scores into a table
-
-
-
-
 var quiz = {
     questions: [
         {
@@ -61,6 +32,7 @@ var quiz = {
 
 var gameTimerEnd = 0;
 var highScore = localStorage.getItem('highScore') || 0;
+var isLastQuestionCorrect = false;
 
 // create the question html
 var body = document.body;
@@ -81,6 +53,10 @@ function startGame() {
 };
 
 function displayNextQuestion() {
+    var highScoreButtonRemove = document.getElementById("score-page");
+    if (highScoreButtonRemove != null) {
+        document.getElementById("score-page").remove();
+    };
     var currentQuestion = getCurrentQuestion();
     var divEl = document.createElement("div");
     divEl.setAttribute("id", "containerRemove");
@@ -100,6 +76,20 @@ function displayNextQuestion() {
         labelEl.setAttribute("id", "answer-buttons");
         document.getElementById("button-text-"+x.toString()).appendChild(labelEl);
         labelEl.addEventListener("click", checkAnswer);
+    }
+
+    if (quiz.currentQuestionIndex != 0) {
+        var answerText = "";
+        
+        if (isLastQuestionCorrect) {
+            answerText = "Correct";
+        } else {
+            answerText = "Incorrect!";
+        }
+
+        var answerTextEl = document.createElement("h1");
+        answerTextEl.textContent = answerText;
+        document.getElementById("containerRemove").appendChild(answerTextEl);
     }
 }
 
@@ -128,9 +118,11 @@ function countdown() {
         } else if (timer == 1) {
             timerH1.innerHTML = timer + ' second remaining';
             timer--;
-        } else if (gameTimeEnd = 1) {
+        } else if (gameTimerEnd = 1) {
             clearInterval(timeInterval);
             timerH1.innerHTML = "Your score is: " + timer;
+            window.alert("Game Over!")
+            newGame();
         } else {
             timer == 0;
             clearInterval(timeInterval);
@@ -156,7 +148,14 @@ function resetScreen() {
 }
 
 function newScreenReset() {
-    document.getElementById("containerRemove").remove();
+    var mainPageElement = document.getElementById("main-page");
+    if (mainPageElement != null){
+        mainPageElement.remove();
+    };
+    var containerElement = document.getElementById("containerRemove");
+    if (containerElement != null){
+        containerElement.remove();
+    };
     quiz.currentQuestionIndex = 0;
     gameTimerEnd = 0;
     timer = 70;
@@ -169,26 +168,13 @@ function clearScoreScreen () {
     newGame();
 };
 
-// function highScorePageCreation() {
-//     var highScoreLinkButton = document.createElement("button");
-//     highScoreLinkButton.textContent = "High Scores - Click Here!";
-//     highScoreLinkButton.setAttribute("id", "scorePageContainer");
-//     document.getElementById("high-scores-page").appendChild(highScoreLinkButton);
-
-//     highScoreLinkButton.addEventListener("click", scorePage);
-// };
-
-
 function scorePage () {
     document.getElementById("main-page").remove();
-    //document.getElementById("scorePageContainer").remove();
-    //document.getElementById("deleteScorePage").remove();
 
     var highScoreTitle = document.createElement("h1");
     highScoreTitle.textContent = "High Scores:"
     document.getElementById("high-scores-page").appendChild(highScoreTitle);
 
-    //add here where to pull the list of high scores - getItem local storage?
     var myScoreData = localStorage.getItem(inputText);
     console.log(myScoreData);
 
@@ -197,8 +183,7 @@ function scorePage () {
     document.getElementById("high-scores-page").appendChild("highScoreInfo");
 }
 
-function highScorePage() {
-    //highScorePageCreation();
+function endGamePage() {
     document.getElementById("deleteScorePage").remove();
     var endGameDiv2El = document.createElement("div");
     endGameDiv2El.setAttribute("id", "endGame");
@@ -222,11 +207,9 @@ function highScorePage() {
 };
 
 function newGame() {
-    //highScorePageCreation();
-    //div h1 p button
     var timerContainerElement = document.getElementById("timerContainer");
     if (timerContainerElement != null){
-        document.getElementById("timerContainer").remove();
+        timerContainerElement.remove();
     };
     var endGameElement = document.getElementById("endGame");
     if (endGameElement != null) {
@@ -236,32 +219,48 @@ function newGame() {
     if (highScoreElement != null) {
         document.getElementById("score-title-div").remove();
     };
+    var highScorePageElement = document.getElementById("score-page");
+    if (highScorePageElement != null) {
+        document.getElementById("score-page").remove();
+    };
+    var mainPageElement = document.getElementById("main-page");
+    if (mainPageElement != null){
+        document.mainPageElement.remove();
+    };
+    var containerElement = document.getElementById("containerRemove");
+    if (containerElement != null){
+        document.getElementById("containerRemove").remove();
+    };
     
+    var newHighScoreButton = document.createElement("button");
+    newHighScoreButton.textContent = "View High Scores!";
+    newHighScoreButton.setAttribute("id", "score-page");
+    document.getElementById("high-scores-page").appendChild(newHighScoreButton);
+    newHighScoreButton.addEventListener("click", showHighScores);
+
 
     var menuDivEl = document.createElement("div");
-    menuDivEl.setAttribute("id", "containerRemove");
+    menuDivEl.setAttribute("id", "main-page");
     document.getElementById("quiz").appendChild(menuDivEl);
 
     var h1NewGame = document.createElement("h1");
     h1NewGame.textContent = "Coding Quiz Challenge";
-    document.getElementById("containerRemove").appendChild(h1NewGame);
+    h1NewGame.setAttribute("id", "containerRemove");
+    document.getElementById("main-page").appendChild(h1NewGame);
 
     var pNewGame = document.createElement("p");
     pNewGame.textContent = "Welcome to the coding quiz challenge! Answer as many coding related questions you can before the time limit is up.  Wrong answers will deduct ten seconds from the time remaining.  Answer all questions before time is up for a chance at the new high score!";
-    document.getElementById("containerRemove").appendChild(pNewGame);
+    document.getElementById("main-page").appendChild(pNewGame);
         
     var buttonNewGame = document.createElement("button");
     buttonNewGame.textContent = "Start Quiz!";
-    buttonNewGame.setAttribute("id", "start-game2");
-    document.getElementById("containerRemove").appendChild(buttonNewGame);
+    buttonNewGame.setAttribute("id", "start-game");
+    document.getElementById("main-page").appendChild(buttonNewGame);
 
-    var newStartButton = document.querySelector("#start-game2");
+    var newStartButton = document.querySelector("#start-game");
     quiz.correctCount = 0;
     quiz.currentQuestionIndex = 0;
 
-    /*timerStr = timer.toString();
-    localStorage.setItem("High Score", timerStr);*/
-    //var timer = 70;
     newStartButton.addEventListener("click", newScreenReset);
 };
 
@@ -280,11 +279,13 @@ function checkAnswer(event) {
             console.log("correct");
             quiz.correctCount++;
             console.log(quiz.correctCount.toString());
+            isLastQuestionCorrect = true;
             resetScreen();
     
         } else {
             console.log("incorrect");
             timer = timer - 10;
+            isLastQuestionCorrect = false;
             resetScreen();
         }
 };
@@ -292,14 +293,18 @@ function checkAnswer(event) {
 function endGame() {
     createHtmlContainerForEndScreen();
     appendEndGameTextToEndScreen();
-    //appendFinalScoreText();
     createEndGameForm();
 };
 
-function saveScore() {
+function saveScore(event) {
+    event.preventDefault();
+    var name = document.getElementById("highScoreName").value; 
+    if (name === "" || name === null) {
+        window.alert("Please enter your initials!");
+        return;
+    }
     var quizHighScores = JSON.parse(localStorage.getItem("quizHighScores")) ?? [];
 
-    var name = document.getElementById("highScoreName").value; 
     var newScore = timer.toString();
 
     var highScoreObject = {
@@ -315,7 +320,7 @@ function saveScore() {
 
     localStorage.setItem("quizHighScores", JSON.stringify(topTenScores));
 
-    highScorePage();
+    endGamePage();
 }
 
 // click the start button
@@ -323,7 +328,7 @@ startButton.addEventListener("click", startGame);
 highScoreButton.addEventListener("click", showHighScores);
 
 function createEndGameForm() {
-    //highScorePageCreation();
+
     var formName = document.createElement("form");
     formName.setAttribute("id", "highScore");
     //document.getElementById("endGame").appendChild(formName);
@@ -345,13 +350,12 @@ function createEndGameForm() {
     submitButton.setAttribute("id", "submitScore");
     submitButton.textContent = "Submit";
     document.getElementById("deleteScorePage").appendChild(submitButton);
-    var clickSave = document.getElementById("submitScore");
-    //document.getElementById("highScore").appendChild(submitButton);
-
+    
+    var clickSave = document.getElementById("submitScore")
+    
+    
     clickSave.addEventListener("click", saveScore);
 
-    //var submitButtonQ = document.querySelector("#highScore");
-    //submitButtonQ.addEventListener("click", highScorePage);
 }
 
 function appendFinalScoreText() {
@@ -372,17 +376,6 @@ function createHtmlContainerForEndScreen() {
     document.getElementById("quiz").appendChild(endGameDivEl);
 }
 
-
-
-
-// can either have it always keep the 1 high score, or look up how to print top 3-5 scores, and evaluate if new score is higher each time
-
-//add if/then statements so if the question is right/wrong, it then shows it on the following screen under the next question
-
-//make a link on all pages that will take you to high scores - maybe only on main menu?
-
-//css to make it pretty
-
 var highScoreNumber = 10;
 var highScoreList = 'scoresHigh';
 var highScoreString = localStorage.getItem(highScoreList);
@@ -398,9 +391,6 @@ function checkHighScore(score) {
         showHighScores();
     }
 }
-
-
-
 
 function showHighScores() {
     var highScorePageElement = document.getElementById("score-title-div");
@@ -424,14 +414,9 @@ function showHighScores() {
     scoreTitleH1.textContent = "High Scores: ";
     document.getElementById("score-title-div").appendChild(scoreTitleH1);
 
-    var scoreMenuButton = document.createElement("button");
-    scoreMenuButton.setAttribute("id", "score-menu-button");
-    scoreMenuButton.textContent = "Main Menu";
-    scoreMenuButton.addEventListener("click", newGame);
-    document.getElementById("score-title-div").appendChild(scoreMenuButton);
     
 
-    var scoreOrList = document.createElement("ol");
+    var scoreOrList = document.createElement("ul");
     scoreOrList.setAttribute("id", "scoresHigh");
     document.getElementById("score-title-div").appendChild(scoreOrList);
 
@@ -441,7 +426,13 @@ function showHighScores() {
     scoresHighList.innerHTML = scoresHigh
         .map((score) => `<li>${score.score} - ${score.name}`)
         .join('');
-    
-        
-    //var scoreMenu = document.querySelector("score-menu-button");    
+
+    var scoreMenuButton = document.createElement("button");
+    scoreMenuButton.setAttribute("id", "score-menu-button");
+    scoreMenuButton.textContent = "Main Menu";
+    scoreMenuButton.addEventListener("click", newGame);
+    document.getElementById("score-title-div").appendChild(scoreMenuButton);  
 }
+
+
+//add so it says correct/incorrect
