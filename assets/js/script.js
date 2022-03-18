@@ -22,7 +22,7 @@ var quiz = {
         },
         {
             question: "Which is the correct way to define a function in JavaScript?",
-            choices: ["function = newfunction()", "function newFunction()", "function:newFunction().", "var function newFunction()"],
+            choices: ["function = newfunction()", "function newFunction()", "function:newFunction()", "var function newFunction()"],
             correct: 1
         }
     ],
@@ -368,6 +368,17 @@ function appendEndGameTextToEndScreen() {
     var endGameText = document.createElement("h1");
     endGameText.textContent = "All Done!";
     document.getElementById("endGame").appendChild(endGameText);
+    
+    var answerText = "";
+    if (isLastQuestionCorrect) {
+        answerText = "You answered the last question correct!  Good job!";
+    } else {
+        answerText = "Sorry you answered the last question incorrectly!";
+    }
+
+    var answerTextEl = document.createElement("h1");
+    answerTextEl.textContent = answerText;
+    document.getElementById("endGame").appendChild(answerTextEl);
 }
 
 function createHtmlContainerForEndScreen() {
