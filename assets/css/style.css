@@ -1,8 +1,68 @@
-div #quiz {
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+body {
+    background-color: rgb(216, 219 ,227);
+}
+h1 {
+    text-align: center;
+    margin: .5%;
+}
+section {
+    border-style: solid;
+    border-width: 2px;
+    padding: 2%;
+    margin: 4%;
+}
+form {
     display: flex;
+    justify-content: center;
+}
+#format {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    flex-direction: column;
+    padding: 10px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: black;
+    width: auto;
+    margin: 3.5%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    flex-wrap: wrap;
 }
-#containerRemove {
+
+#main-page {
+    display:flex;
     flex-direction: column;
+    align-items: center;
 }
+#highScore,
+#submitScore {
+    margin: .5%;
+}
+#start-game,
+#start-game2 {
+    padding: 1%;
+    margin: 1%;
+}
+#answer-buttons{
+    padding: .5%;
+    margin: .5%;
+    /* background-color:rgba(113, 64, 153, 0.288) */
+}
+#score-page {
+    padding: .25%;
+}
+#deleteScorePage {
+    display: flex;
+    justify-content: center;
+}
+/* #containerRemove {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+} */
