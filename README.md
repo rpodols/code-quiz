@@ -16,6 +16,6 @@ Starting from scratch, this challenge required writing the code to do the follow
 
 ## Link to Project & Screenshot
 ![Portfolio Screenshot)](/assets/images/applicationImage.png)
-[Click here to view the project!](hhttps://rpodols.github.io/code-quiz/)
+[Click here to view the project!](https://rpodols.github.io/code-quiz/)
 
 
